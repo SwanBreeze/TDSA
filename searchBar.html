@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search doc</title>
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="cssGlobale.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div id="sidebar-container"></div><!--navgation sidebar-->
+
+<div class="main-search-wrapper">
+  
+  <div class="search-content"><!--wrapper-->
+    <form class="search-container">
+                <div class="search-bar">
+                       <input type="text" placeholder="Search PV,reports..." class="search-input">
+                       <button type="submit" class="search-button">
+                           <i class='bx bx-search'></i>
+                       </button>
+                </div>
+           
+        
+        <div class="search-filters">
+               <select class="filter-select">
+                    <option value="">All types</option>
+                    <option value="">PV</option>
+                    <option value="">Articles</option>
+               </select>
+            <select class="filter-select">
+                     <option value="">All years</option>
+                     <option value="">2025</option>
+                     <option value="">2024</option>
+                     <option value="">2023</option>
+             </select>
+             <select class="filter-select">
+                      <option>All Departments</option>
+                      <option>Computer Science</option>
+                      <option>Mathematics</option>
+              </select>
+        </div>
+    </form>
+  </div>
+
+  <div class="search-results" id="resultsContainer">
+    <div class="result-item">
+    
+       <div class="attachements">
+          <div class="attachement-item">
+              <div class="info-fichier">
+                  <i class='bx bxs-file-pdf file-icon'></i>
+                 <span>example.pdf</span>
+              </div>
+                    <button class="download-btn" onclick="downLoadFile('')">
+                        <i class='bx bxs-download' ></i>
+                    </button>
+          </div>
+        </div>
+   </div>
+
+
+   </div>
+ </div>
+
+
+
+
+
+<script>
+    fetch('index.html')
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const sidebar = doc.querySelector('.sidebar');
+            document.getElementById('sidebar-container').appendChild(sidebar);
+            
+            // Load the JS file and initialize
+            const script = document.createElement('script');
+            script.src = 'app.js';
+            script.onload = function() {
+                if (window.initializeSidebar) {
+                    window.initializeSidebar();
+                }
+            };
+            document.body.appendChild(script);
+        });
+</script>
+</body>
+</html>
