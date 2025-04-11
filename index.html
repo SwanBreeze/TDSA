@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search & Upload Documents</title>
+    <link rel="stylesheet" href="cssGlobale.css">
+    <link rel="stylesheet" href="search.css">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <nav class="sidebar">
+        <!-- Sidebar Content -->
+        <header>
+            <div class="image-text">
+               <span class="image">
+                <img src="assets/ustoLogo.png" alt="logo">
+               </span> 
+               <div class="text header-text">
+                <span class="name">Search Doc</span>
+                <span class="profession">Poste Graduation FMI</span>
+                </div>
+            </div>
+            <i class='bx bx-chevrons-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="login.html">
+                            <i class='bx bx-log-in icon'></i>
+                            <span class="text nav-text">Log in/Sign Up</span>
+                       </a>
+                   </li>
+                   <li class="nav-link">
+                    <a href="searchBar.html"> <!-- Link to your Search HTML -->
+                        <i class='bx bx-file-find icon' ></i>
+                        <span class="text nav-text">Search Doc</span>
+                   </a>
+               </li>
+               <li class="nav-link">
+                <a href="upload.html"> <!-- Link to your Upload HTML -->
+                    <i class='bx bx-upload icon'></i>
+                    <span class="text nav-text">Upload Doc</span>
+               </a>
+              </li>
+            </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="logout.html">
+                        <i class='bx bx-log-out icon'></i>
+                        <span class="text nav-text">LogOut</span>
+                   </a>
+               </li>
+               <li class="mode">
+                <div class="moon-sun">
+                    <i class='bx bx-moon icon moon'></i>
+                    <i class='bx bx-sun icon sun'></i>
+                 </div>
+                 <span class="mode-text text">Dark Mode</span>
+                 <div class="toggle-switch">
+                    <span class="switch"></span>
+                 </div>  
+           </li>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Main Content for Index Page -->
+        <section class="main-content">
+            <h1>Welcome to the Search & Upload System</h1>
+            <p>This is  where you can search for documents and upload new ones.</p>
+
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
