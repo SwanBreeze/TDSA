@@ -25,14 +25,14 @@ function initializeSidebar() {
                 } else {
                     modeText.innerText = 'Dark Mode';
                     moonIcon.style.display = 'block';
-                    sunIcon.style.display = 'none';
+                   sunIcon.style.display = 'none';
                 }
             });
         }
     }
 }
 
-// Initialize when DOM is loaded (for sideBar.html)
+// Initialize when DOM is loaded (for index.html)
 document.addEventListener('DOMContentLoaded', initializeSidebar);
 
 // Export for dynamic loading (for searchBar.html)
