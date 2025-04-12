@@ -22,6 +22,8 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
 
 
+
+
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
@@ -40,8 +42,9 @@ public class DocumentService {
         doc.setFileSize(file.getSize());
 
 
+  String path= saveFile(file);
 
-
+doc.setFilePath(path);
         saveFile(file);
 
 
@@ -73,10 +76,13 @@ public class DocumentService {
     }
 
 
+
+
     public Optional<DocumentModel> findById(String id) {
 
 
         return documentRepository.findById(id);
 
     }
+
 }
