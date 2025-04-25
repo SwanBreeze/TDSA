@@ -39,3 +39,17 @@ document.addEventListener('DOMContentLoaded', initializeSidebar);
 if (typeof window !== 'undefined') {
     window.initializeSidebar = initializeSidebar;
 }
+
+
+/*service worker section*/
+
+// register
+if('serviceWorker' in navigator)
+{
+    window.addEventListener('load',()=> {
+        navigator.serviceWorker
+        .register('/service_worker_cached.js')
+        .then(reg => console.log('Service Worker: Registered'))
+        .catch(err=> console.log(`Service Worker: Error: ${err}`))
+    })
+}
