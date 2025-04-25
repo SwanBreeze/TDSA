@@ -38,6 +38,7 @@ body{
     padding: 10px 14px;
     background: var(--sidebar-color);
     border-radius: 0 30px 30px 0;
+    z-index: 1000;
 }
 /*===== Resuable CSS=======*/
 .sidebar .text{
@@ -144,12 +145,13 @@ font-size: 20px;
     justify-content: space-between;
 }
 
+
 .menu-bar .mode{
     background: var(--primary-color-light);
 }
 .menu-bar .mode .moon-sun{
     height: 50px;
-    width: 60px;
+    width: 600px;
     display: flex;
     align-items: center;
     color: var(--text-color);
@@ -193,7 +195,6 @@ font-size: 20px;
 .sidebar.close .text,
 .sidebar.close .profession,
 .sidebar.close .name,
-.sidebar.close .toggle-switch,
 .sidebar.close .moon-sun,
 .sidebar.close .mode-text {
     display: none !important;
