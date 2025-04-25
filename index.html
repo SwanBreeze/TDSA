@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search & Upload Documents</title>
+
     <link rel="stylesheet" href="cssGlobale.css">
     <link rel="stylesheet" href="search.css">
-
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="android-chrome-192.png">
+    <link rel="icon" href="android-chrome-512.png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -15,7 +18,7 @@
         <header>
             <div class="image-text">
                <span class="image">
-                <img src="assets/ustoLogo.png" alt="logo">
+                <img src="ustoLogo.png" alt="logo">
                </span> 
                <div class="text header-text">
                 <span class="name">Search Doc</span>
@@ -41,7 +44,7 @@
                    </a>
                </li>
                <li class="nav-link">
-                <a href="upload.html"> <!-- Link to your Upload HTML -->
+                <a href="Upload.html"> <!-- Link to your Upload HTML -->
                     <i class='bx bx-upload icon'></i>
                     <span class="text nav-text">Upload Doc</span>
                </a>
@@ -57,8 +60,8 @@
                </li>
                <li class="mode">
                 <div class="moon-sun">
-                    <i class='bx bx-moon icon moon'></i>
-                    <i class='bx bx-sun icon sun'></i>
+                    <i class='bx bx-moon icon moon' ></i>
+                    <i class='bx bx-sun icon sun'style="display: none;"></i>
                  </div>
                  <span class="mode-text text">Dark Mode</span>
                  <div class="toggle-switch">
