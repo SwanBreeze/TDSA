@@ -14,6 +14,7 @@
     --toggle-color: #DDD;
     --text-color: #707070;
     --accent-color: #8563dc;
+    --container-color:#cfcfcf8f;
 
     --tran-02: all 0.2s ease;
     --tran-03: all 0.3s ease;
@@ -21,6 +22,8 @@
     --tran-05: all 0.5s ease;
     --tran-06: transform 0.3s ease;
     --tran-07:transform 0.2s;
+
+    --toggle-size: 8px;
    
 }
 body{
@@ -36,9 +39,11 @@ body{
    width: 100%;
    max-width: 200px;
     padding: 10px 14px;
-    background: var(--sidebar-color);
+   /* background: var(--sidebar-color);*/
     border-radius: 0 30px 30px 0;
     z-index: 1000;
+   background: var(--sidebar-color);
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
 }
 /*===== Resuable CSS=======*/
 .sidebar .text{
@@ -110,6 +115,9 @@ border-radius: 50%;
 color: var(--sidebar-color);
 font-size: 20px;
 }
+
+
+
 /*.sidebar .search-box{
     background: var(--primary-color-light);
 }
@@ -132,6 +140,7 @@ font-size: 20px;
 }
 .sidebar li a:hover{
     background: var(--primary-color);
+    box-shadow: 0 3px 10px rgba(178, 98, 224, 0.3);
 }
 .sidebar li a:hover  .icon,
 .sidebar li a:hover .text{
@@ -151,7 +160,7 @@ font-size: 20px;
 }
 .menu-bar .mode .moon-sun{
     height: 50px;
-    width: 600px;
+    width: 100%;
     display: flex;
     align-items: center;
     color: var(--text-color);
@@ -217,7 +226,7 @@ font-size: 20px;
 body.dark {
     
     --text-color: #fff;
-    --sidebar-color: #242526;
+    --sidebar-color: #333537;
     --body-color: #18191a;
  --accent-color: #5331a8;
    
@@ -226,6 +235,7 @@ body.dark {
     --primary-color-light: #4e4e55;
     --toggle-color: #d7d1d1;
    
+    --container-color: #2c1f3763;
    
 }
 
@@ -245,6 +255,38 @@ body.dark .menu-links li a {
     margin-left: 12px;
 }
 
+
+
+
+
+.theme-checkbox {
+    --toggle-size: 8px;
+    appearance: none;
+    width: 50px;
+    height: 25px;
+    background: var(--body-color);
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    font-size: var(--toggle-size);
+  }
+  
+  .theme-checkbox::before {
+    content: "";
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  .theme-checkbox:checked::before {
+    left: calc(100% - 20px - 2px);
+   
+  }
+  
 /* Change cursor to pointer on toggle button */
 .toggle {
     cursor: pointer;
