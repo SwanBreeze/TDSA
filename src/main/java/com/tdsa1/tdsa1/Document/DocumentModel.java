@@ -117,4 +117,15 @@ public class DocumentModel {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+    @Field(type = FieldType.Keyword)
+    private String department;
+
+    // Add getter and setter
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 }
