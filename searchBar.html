@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search doc</title>
+    <title>Search & upload  document</title>
     <link rel="stylesheet" href="search.css">
     <link rel="stylesheet" href="cssGlobale.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="android-chrome-192.png">
     <link rel="icon" href="android-chrome-512.png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+   
 </head>
 <body>
     <div id="sidebar-container"></div><!--navgation sidebar-->
 
 <div class="main-search-wrapper">
+    
    <div class="search-header">
-    <h1>Find Your Documents</h1>
+   
    </div>
   <div class="search-content"><!--wrapper-->
     <form class="search-container">
@@ -29,6 +31,13 @@
            
         
         <div class="search-filters">
+               <select class="filter-select">
+                 <option value="">All documents</option>
+                 <option value="">PV</option>
+                 <option value="">Announce</option>
+                 <option value="">Planning</option>
+                 <option value="">Time Table</option>
+              </select>
                <select class="filter-select">
                     <option value="">All types</option>
                     <option value="">PDF</option>
@@ -88,24 +97,6 @@
         <p>Uploaded: 2025-04-23</p>
         <button class="btn-download"><i class='bx bxs-download' ></i></button>
       </div>
-      <div class="card">
-        <h3>report.excel</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-23</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
-      <div class="card">
-        <h3>report.excel</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-23</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
-   </div>
-         <div class="pagination">
-          <button><i class='bx bx-left-arrow-alt' ></i></button>
-          <span>Page 1/5</span>
-          <button><i class='bx bx-right-arrow-alt'></i></button>
-         </div>
 </div>
 <div id="app"></div>
 <script>
