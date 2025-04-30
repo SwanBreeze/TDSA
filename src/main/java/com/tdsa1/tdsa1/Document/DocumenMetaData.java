@@ -12,6 +12,9 @@ public class DocumenMetaData {
 
     private String content;
 
+    public DocumenMetaData(String id, String title, String content, String author, LocalDateTime createdAt) {
+    }
+
     public String getContent() {
         return content;
     }
