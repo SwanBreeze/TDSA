@@ -1,9 +1,3 @@
-
-// Apply dark mode early based on localStorage
-const storedTheme = localStorage.getItem('theme');
-if (storedTheme === 'dark') {
-    document.body.classList.add('dark');
-}
 function initializeSidebar() {
     // Toggle Sidebar
     const toggle = document.querySelector('.toggle');
@@ -24,19 +18,16 @@ function initializeSidebar() {
             modeSwitch.addEventListener('click', function() {
                 document.body.classList.toggle('dark');
                 
-                const isDark = document.body.classList.contains('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-    if (isDark) {
-        modeText.innerText = 'Light Mode';
-        moonIcon.style.display = 'none';
-        sunIcon.style.display = 'block';
-    } else {
-        modeText.innerText = 'Dark Mode';
-        moonIcon.style.display = 'block';
-        sunIcon.style.display = 'none';
-    }
-});
+                if(document.body.classList.contains('dark')) {
+                    modeText.innerText = 'Light Mode';
+                    moonIcon.style.display = 'none';
+                    sunIcon.style.display = 'block';
+                } else {
+                    modeText.innerText = 'Dark Mode';
+                    moonIcon.style.display = 'block';
+                   sunIcon.style.display = 'none';
+                }
+            });
         }
     }
 }
