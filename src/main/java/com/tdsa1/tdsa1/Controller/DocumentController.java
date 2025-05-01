@@ -46,7 +46,7 @@ public class DocumentController {
             return ResponseEntity.badRequest().body("File cannot be empty");
         }
 
-        if (document == null || document.getAuthor() == null || document.getTitle()==null || document.getCreatedAt()==null || document.getContent()==null) {
+        if (document == null || document.getAuthor() == null || document.getTitle()==null || document.getDateCreation()==null || document.getContent()==null) {
             return ResponseEntity.badRequest().body("Invalid document metadata");
         }
 
@@ -71,14 +71,14 @@ public class DocumentController {
     public List<DocumenMetaData> searchDocument(String word) {
         SearchHits<DocumentModel> hits = documentService.searchDocument(word);
         return hits.get()
-                    .map(SearchHit::getContent)
-                    .map(document -> new DocumenMetaData(
-                            document.getId(),
-                            document.getTitle(),
-                            document.getContent(),
-                            document.getAuthor(),
-                            document.getCreatedAt()
-                    ))
+                .map(SearchHit::getContent)
+                .map(document -> new DocumenMetaData(
+                        document.getId(),
+                        document.getTitle(),
+                        document.getContent(),
+                        document.getAuthor(),
+                        document.getDateCreation()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -90,16 +90,15 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/upload-files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadIndexes(String indexName,List<MultipartFile> files){
+    public ResponseEntity<String> uploadIndexes(@RequestParam String indexName,@RequestParam List<MultipartFile> files){
 
 
         try {
-
-            if (indexName.equals("pv") || indexName.equals("annance") || indexName.equals("emploi") || indexName.equals("planning")) {
-                documentService.indexFile(indexName, files);
-            }
-        }catch(Exception e){
-            System.out.println(e);
+            documentService.indexFile(indexName,files);
+            return ResponseEntity.ok("File uploaded");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+                    .body("Error uploading the file");
         }
 
 
