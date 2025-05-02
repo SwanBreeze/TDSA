@@ -1,7 +1,13 @@
 package com.tdsa1.tdsa1.Document;
-import org.springframework.data.annotation.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.data.elasticsearch.annotations.Document;
-import java.time.LocalDate;
+
+
+@AllArgsConstructor
+
+@Builder
 
 @Document(indexName = "pv")
 public class PvDocument extends BaseDocument {

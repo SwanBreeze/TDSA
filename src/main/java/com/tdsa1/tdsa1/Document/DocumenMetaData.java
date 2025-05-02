@@ -3,7 +3,7 @@ package com.tdsa1.tdsa1.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 public class DocumenMetaData {
 
@@ -22,7 +22,6 @@ public class DocumenMetaData {
 
     public DocumenMetaData() {
     }
-
 
 
     public DocumenMetaData(String id, String title, String content, String author, LocalDate dateCreation) {
@@ -49,11 +48,6 @@ public class DocumenMetaData {
     public void setContent(String content) {
         this.content = content;
     }
-
-
-
-
-
 
 
     public String getTitle() {

@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-    <properties>
-        <parsers>
-            <parser class="org.apache.tika.parser.DefaultParser">
-                <parser-exclude class="org.apache.tika.parser.ocr.TesseractOCRParser"/>
-            </parser>
-            <parser class="org.apache.tika.parser.ocr.TesseractOCRParser">
-                <params>
-                    <!-- uniquement le dossier -->
-                    <param name="tesseractPath"  type="string">C:/Program Files/Tesseract-OCR</param>
-                    <!-- dossier tessdata : contient eng.traineddata, fra.traineddata, etc. -->
-                    <param name="tessdataPath"   type="string">C:/Program Files/Tesseract-OCR/tessdata</param>
-                    <param name="language"       type="string">eng+fra+ara</param>
-                </params>
-            </parser>
-        </parsers>
-    </properties>
+<properties>
+    <parsers>
+        <parser class="org.apache.tika.parser.DefaultParser">
+            <parser-exclude class="org.apache.tika.parser.ocr.TesseractOCRParser"/>
+        </parser>
+        <parser class="org.apache.tika.parser.ocr.TesseractOCRParser">
+            <params>
+                <!-- Path to Tesseract binary -->
+                <param name="tesseractPath" type="string">/usr/bin</param>
+
+                <!-- Path to tessdata directory -->
+                <param name="tessdataPath" type="string">/usr/share/tesseract-ocr/4.00/tessdata</param>
+
+                <!-- Languages: English, French, Arabic -->
+                <param name="language" type="string">eng+fra+ara</param>
+            </params>
+        </parser>
+    </parsers>
+</properties>
+
+
 

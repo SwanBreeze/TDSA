@@ -1,36 +1,31 @@
 package com.tdsa1.tdsa1.Service;
+
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.TikaCoreProperties;
 import com.tdsa1.tdsa1.Document.*;
 import com.tdsa1.tdsa1.Repository.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.ocr.TesseractOCRConfig;
 import org.apache.tika.sax.BodyContentHandler;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.SearchHitSupport;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.util.Streamable;
-import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import org.xml.sax.SAXException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -38,25 +33,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Locale;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentService {
 
 
-
-    private final DocumentRepository documentRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
-
-    private final  ElasticsearchOperations elasticsearchOperations;
+    private final DocumentRepository documentRepository;
+    private final ElasticsearchOperations elasticsearchOperations;
 
     private final PvRepository pvRepository;
 
@@ -72,7 +63,6 @@ public class DocumentService {
     private final ParseContext context;
 
 
-
     @Autowired
     public DocumentService(DocumentRepository documentRepository,
                            ElasticsearchOperations elasticsearchOperations,
@@ -82,12 +72,12 @@ public class DocumentService {
                            EmploiRepository emploiRepository)
             throws TikaException, IOException, SAXException {
 
-        this.documentRepository    = documentRepository;
+        this.documentRepository = documentRepository;
         this.elasticsearchOperations = elasticsearchOperations;
-        this.pvRepository          = pvRepository;
-        this.annonceRepository     = annonceRepository;
-        this.planningRepository    = planningRepository;
-        this.emploiRepository      = emploiRepository;
+        this.pvRepository = pvRepository;
+        this.annonceRepository = annonceRepository;
+        this.planningRepository = planningRepository;
+        this.emploiRepository = emploiRepository;
 
         // ─── 1) Charger la config XML ────────────────────────────────
         AutoDetectParser autoParser;
@@ -100,9 +90,7 @@ public class DocumentService {
 
         // ─── 2) (Optionnel) Reconfigurer manuellement le TesseractOCRParser ───
         for (org.apache.tika.parser.Parser p : autoParser.getParsers().values()) {
-            if (p instanceof org.apache.tika.parser.ocr.TesseractOCRParser) {
-                org.apache.tika.parser.ocr.TesseractOCRParser tessParser =
-                        (org.apache.tika.parser.ocr.TesseractOCRParser) p;
+            if (p instanceof org.apache.tika.parser.ocr.TesseractOCRParser tessParser) {
 
                 // On pointe sur le dossier contenant tesseract.exe
                 tessParser.setTesseractPath("C:/Program Files/Tesseract-OCR");
@@ -135,8 +123,6 @@ public class DocumentService {
     public void upload(MultipartFile file, DocumenMetaData document) throws IOException {
 
 
-
-
         DocumentModel doc = new DocumentModel();
 
         doc.setTitle(document.getTitle());
@@ -160,15 +146,11 @@ public class DocumentService {
         //document set service
 
 
-
 //        List<String> allowedExtensions = List.of("txt", "pdf", "docx");
 //
 //        if (!allowedExtensions.contains(extension)) {
 //            return ResponseEntity.badRequest().body("Invalid file type.");
 //        }
-
-
-
 
 
         String path = saveFile(file);
@@ -187,10 +169,6 @@ public class DocumentService {
         }
 
 
-
-
-
-
     }
 
     private String saveFile(MultipartFile file) {
@@ -201,10 +179,7 @@ public class DocumentService {
             String fileName = file.getOriginalFilename();
 
 
-
             Path path = Paths.get(uploadDir + fileName);
-
-
 
 
             // Create directory if it doesn't exist
@@ -219,8 +194,6 @@ public class DocumentService {
             throw new RuntimeException("Failed to store file");
         }
     }
-
-
 
 
     public SearchHits<DocumentModel> searchDocument(String word) {
@@ -240,7 +213,6 @@ public class DocumentService {
 
         // Title query (fuzzy match)
         boolBuilder.should(titleQuery);
-
 
 
         Query authorQuery = TermQuery.of(t -> t
@@ -267,7 +239,6 @@ public class DocumentService {
         boolBuilder.minimumShouldMatch("1");
 
 
-
         try {
 //            Query ownerFilter = TermQuery.of(t -> t
 //                    .field("owner")
@@ -278,7 +249,6 @@ public class DocumentService {
                             .must(boolBuilder.build()._toQuery()) // Critères de recherche
                     //  .filter(ownerFilter)                 // Filtre par owner
             )._toQuery();
-
 
 
             NativeQuery nativeQuery = NativeQuery.builder()
@@ -306,8 +276,6 @@ public class DocumentService {
                 BodyContentHandler handler = new BodyContentHandler(-1);
 
 
-
-
                 Metadata metadata = new Metadata();
                 parser.parse(stream, handler, metadata, context);
                 String content = handler.toString();
@@ -317,7 +285,7 @@ public class DocumentService {
                 switch (indexName.toLowerCase()) {
                     case "pv":
                         doc = new PvDocument();
-                        ((PvDocument) doc).setType(determinePvTypeFromContent(content,name));
+                        ((PvDocument) doc).setType(determinePvTypeFromContent(content, name));
                         break;
                     case "annonce":
                         doc = new AnnanceDocument();
@@ -338,25 +306,20 @@ public class DocumentService {
                 assert name != null;
                 if (!name.toLowerCase().contains(indexName)) {
 
-                    String newname=indexName+"-" + name;
+                    String newname = indexName + "-" + name;
 
                     doc.setTitle(newname);
 
-                }
-                else if(name.equals(".pdf")){
+                } else if (name.equals(".pdf")) {
 
 
                     doc.setTitle((title != null && !title.isBlank()) ? title : indexName + name);
 
-                }
-
-                else {
+                } else {
 
                     doc.setTitle(name);
 
                 }
-
-
 
 
                 String author = metadata.get(TikaCoreProperties.CREATOR);
@@ -384,8 +347,6 @@ public class DocumentService {
                 doc.setFilePath(name);
 
 
-
-
                 doc.setFileSize(file.getSize());
                 doc.setPublic(true);
 
@@ -406,20 +367,17 @@ public class DocumentService {
 
     }
 
-    private String determinePvTypeFromContent(String content,String name) {
+    private String determinePvTypeFromContent(String content, String name) {
 
-        if(name.toLowerCase().contains("csf") || content.toLowerCase().contains("csf")) {
-            return"csf";
-        }
-        else if(name.toLowerCase().contains("csd") || content.contains("csd")){
+        if (name.toLowerCase().contains("csf") || content.toLowerCase().contains("csf")) {
+            return "csf";
+        } else if (name.toLowerCase().contains("csd") || content.contains("csd")) {
 
             return "csd";
-        }
-        else {
+        } else {
 
             return "csf";
         }
-
 
 
     }
@@ -453,7 +411,8 @@ public class DocumentService {
             // Nouveau : format ISO classique
             try {
                 return LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE);
-            } catch (DateTimeParseException ignored) {}
+            } catch (DateTimeParseException ignored) {
+            }
 
             // Nouveau : format avec heure
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -464,8 +423,6 @@ public class DocumentService {
             return null;
         }
     }
-
-
 
 
 }

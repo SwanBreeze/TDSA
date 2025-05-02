@@ -1,4 +1,5 @@
 package com.tdsa1.tdsa1.Controller;
+
 import com.tdsa1.tdsa1.Document.DocumenMetaData;
 import com.tdsa1.tdsa1.Document.DocumentModel;
 import com.tdsa1.tdsa1.Service.DocumentService;
@@ -12,19 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/document")
 public class DocumentController {
-
 
 
     private final DocumentService documentService;
@@ -32,6 +27,11 @@ public class DocumentController {
     @Autowired
     public DocumentController(DocumentService documentService) {
         this.documentService = documentService;
+    }
+
+    @GetMapping("/")
+    public String check() {
+        return "yes girl it's working";
     }
 
 
@@ -46,7 +46,7 @@ public class DocumentController {
             return ResponseEntity.badRequest().body("File cannot be empty");
         }
 
-        if (document == null || document.getAuthor() == null || document.getTitle()==null || document.getDateCreation()==null || document.getContent()==null) {
+        if (document == null || document.getAuthor() == null || document.getTitle() == null || document.getDateCreation() == null || document.getContent() == null) {
             return ResponseEntity.badRequest().body("Invalid document metadata");
         }
 
@@ -82,19 +82,13 @@ public class DocumentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/")
-    public String check(){
-
-        return "yes girl it's working";
-
-    }
 
     @PostMapping(path = "/upload-files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadIndexes(@RequestParam String indexName,@RequestParam List<MultipartFile> files){
+    public ResponseEntity<String> uploadIndexes(@RequestParam String indexName, @RequestParam List<MultipartFile> files) {
 
 
         try {
-            documentService.indexFile(indexName,files);
+            documentService.indexFile(indexName, files);
             return ResponseEntity.ok("File uploaded");
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
@@ -102,15 +96,7 @@ public class DocumentController {
         }
 
 
-
     }
-
-
-
-
-
-
-
 
 
 //    @GetMapping("/open-file/{id}")
@@ -129,9 +115,6 @@ public class DocumentController {
 //        Desktop.getDesktop().open(filePath.toFile());
 //        return ResponseEntity.ok("Opened: " + filePath);
 //    }
-
-
-
 
 
 }
