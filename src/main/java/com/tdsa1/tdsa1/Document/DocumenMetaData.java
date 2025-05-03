@@ -17,6 +17,7 @@ public class DocumenMetaData {
     private LocalDate dateCreation;
 
     private String content;
+    private String type;
 
     // private boolean isPublic;
 
@@ -49,7 +50,6 @@ public class DocumenMetaData {
         this.content = content;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -72,6 +72,14 @@ public class DocumenMetaData {
 
     public void setDateCreation(LocalDate dateCreation) {
         this.dateCreation = dateCreation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 //    public boolean isPublic() {

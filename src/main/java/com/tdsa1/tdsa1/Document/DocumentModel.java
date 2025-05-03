@@ -7,7 +7,6 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Document(indexName = "documents")
 public class DocumentModel {
@@ -18,7 +17,6 @@ public class DocumentModel {
 
     @Field(type = FieldType.Text)//Full-text search field (analyzed field for search)
     private String title;
-
 
 
     @Field(type = FieldType.Keyword)//For exact matching (non-analyzed field).
@@ -36,7 +34,7 @@ public class DocumentModel {
 //    @Field(type = FieldType.Keyword)
 //    private String service;
 
-    @Field(type = FieldType.Date,format = {}, pattern = "yyyy-MM-dd")//FieldType.Date: To store date fields.
+    @Field(type = FieldType.Date, format = {}, pattern = "yyyy-MM-dd")//FieldType.Date: To store date fields.
     private LocalDate dateCreation;
 
 
@@ -57,7 +55,9 @@ public class DocumentModel {
     private String content;
 
 
-
+    // Constructors
+    public DocumentModel() {
+    }
 
     public String getFileName() {
         return fileName;
@@ -79,16 +79,11 @@ public class DocumentModel {
         return fileSize;
     }
 
+    // in bytes
+
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
-
-    // in bytes
-
-
-    // Constructors
-    public DocumentModel() {}
-
 
     public String getId() {
         return id;
@@ -138,27 +133,5 @@ public class DocumentModel {
         this.filePath = filePath;
     }
 
-//    public boolean isPublic() {
-//        return isPublic;
-//    }
-//
-//    public void setPublic(boolean aPublic) {
-//        isPublic = aPublic;
-//    }
-//
-//    public String getService() {
-//        return service;
-//    }
-//
-//    public void setService(String service) {
-//        this.service = service;
-//    }
-//
-//    public String getOwner() {
-//        return owner;
-//    }
-//
-//    public void setOwner(String owner) {
-//        this.owner = owner;
-//    }
+
 }

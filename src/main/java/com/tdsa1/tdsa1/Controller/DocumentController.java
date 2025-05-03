@@ -1,7 +1,6 @@
 package com.tdsa1.tdsa1.Controller;
 
-import com.tdsa1.tdsa1.Document.DocumenMetaData;
-import com.tdsa1.tdsa1.Document.DocumentModel;
+import com.tdsa1.tdsa1.Document.*;
 import com.tdsa1.tdsa1.Service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -67,7 +66,7 @@ public class DocumentController {
 
     }
 
-    @GetMapping("/search")
+  /*  @GetMapping("/search")
     public List<DocumenMetaData> searchDocument(String word) {
         SearchHits<DocumentModel> hits = documentService.searchDocument(word);
         return hits.get()
@@ -80,6 +79,43 @@ public class DocumentController {
                         document.getDateCreation()
                 ))
                 .collect(Collectors.toList());
+    }*/
+
+
+    @GetMapping("/search/Pv")
+    public List<DocumenMetaData> searchPv(@RequestParam String word) {
+        return mapHits(documentService.searchDocument(word, "Pv", PvDocument.class, true));
+    }
+
+    @GetMapping("/search/Annonce")
+    public List<DocumenMetaData> searchAnnonce(@RequestParam String word) {
+        return mapHits(documentService.searchDocument(word, "Annonce", AnnanceDocument.class, false));
+    }
+
+    @GetMapping("/search/Planning")
+    public List<DocumenMetaData> searchPlaning(@RequestParam String word) {
+        return mapHits(documentService.searchDocument(word, "Planning", PlanningDocument.class, false));
+
+    }
+
+    @GetMapping("/search/Emploi")
+    public List<DocumenMetaData> searchEmploi(@RequestParam String word) {
+        return mapHits(documentService.searchDocument(word, "Emploi", EmploiDocument.class, false));
+
+    }
+
+
+    private List<DocumenMetaData> mapHits(SearchHits<? extends BaseDocument> hits) {
+        return hits.get()
+                .map(SearchHit::getContent)
+                .map(doc -> new DocumenMetaData(
+                        doc.getId(),
+                        doc.getTitle(),
+                        doc.getContent(),
+                        doc.getAuthor(),
+                        doc.getDateCreation()
+                ))
+                .collect(Collectors.toList());
     }
 
 
@@ -90,6 +126,7 @@ public class DocumentController {
         try {
             documentService.indexFile(indexName, files);
             return ResponseEntity.ok("File uploaded");
+
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
                     .body("Error uploading the file");
@@ -97,24 +134,6 @@ public class DocumentController {
 
 
     }
-
-
-//    @GetMapping("/open-file/{id}")
-//    public ResponseEntity<String> openFile(@RequestBody String id) throws IOException {
-//        Optional<DocumentModel> doc = documentService.findById(id);
-//        if (doc == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        Path filePath = Paths.get(doc.getClass());
-//        if (!Files.exists(filePath)) {
-//            return ResponseEntity.status(404).body("File not found at: " + filePath);
-//        }
-//
-//        // Open file with default system application
-//        Desktop.getDesktop().open(filePath.toFile());
-//        return ResponseEntity.ok("Opened: " + filePath);
-//    }
 
 
 }

@@ -120,7 +120,7 @@ public class DocumentService {
     }
 
 
-    public void upload(MultipartFile file, DocumenMetaData document) throws IOException {
+   /* public void upload(MultipartFile file, DocumenMetaData document) throws IOException {
 
 
         DocumentModel doc = new DocumentModel();
@@ -135,23 +135,6 @@ public class DocumentService {
         doc.setFileName(file.getOriginalFilename());
         doc.setFileType(file.getContentType());
         doc.setFileSize(file.getSize());
-
-        // doc.setPublic(document.isPublic());
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentUsername = authentication.name();
-//
-//        doc.setOwner(currentUsername);
-
-        //document set service
-
-
-//        List<String> allowedExtensions = List.of("txt", "pdf", "docx");
-//
-//        if (!allowedExtensions.contains(extension)) {
-//            return ResponseEntity.badRequest().body("Invalid file type.");
-//        }
-
 
         String path = saveFile(file);
 
@@ -169,7 +152,69 @@ public class DocumentService {
         }
 
 
+    }*/
+
+    // the upload for the controller
+    public void upload(MultipartFile file, DocumenMetaData document) throws IOException {
+        // Create a BaseDocument or DocumentModel based on your design
+        BaseDocument baseDocument = new BaseDocument();
+
+        // Call the helper method that handles the actual upload logic
+        uploadDocument(file, document, baseDocument);
     }
+
+
+    //General Upload Method
+    public void uploadDocument(MultipartFile file, DocumenMetaData document, BaseDocument baseDocument) throws IOException {
+        // Common properties for all documents
+
+        baseDocument.setTitle(document.getTitle());
+        baseDocument.setAuthor(document.getAuthor());
+        baseDocument.setContent(document.getContent());
+        baseDocument.setDateCreation(document.getDateCreation());
+        baseDocument.setFileName(file.getOriginalFilename());
+        baseDocument.setFileType(file.getContentType());
+        baseDocument.setFileSize(file.getSize());
+
+        // Save file to disk and set file path
+        String path = saveFile(file);
+        baseDocument.setFilePath(path);
+
+        try {
+            // Save the document to the repository (and index in Elasticsearch automatically)
+            documentRepository.save(baseDocument);
+        } catch (Exception e) {
+            // Rollback file save on error
+            Files.deleteIfExists(Paths.get(path));
+            throw new RuntimeException("Failed to index document", e);
+        }
+    }
+    // Upload for the Index Pv
+
+    public void uploadPvDocument(MultipartFile file, DocumenMetaData document) throws IOException {
+        PvDocument pvDocument = new PvDocument();
+        pvDocument.setType(document.getType()); // Set type (csf or csd)
+        uploadDocument(file, document, pvDocument);
+    }
+
+    // Upload for the Index Annonce
+    public void uploadAnnonceDocument(MultipartFile file, DocumenMetaData document) throws IOException {
+        AnnanceDocument annanceDocument = new AnnanceDocument();
+        uploadDocument(file, document, annanceDocument);
+    }
+
+    //Upload for the Index Planning
+    public void uploadPlanningDocument(MultipartFile file, DocumenMetaData document) throws IOException {
+        PlanningDocument planningDocument = new PlanningDocument();
+        uploadDocument(file, document, planningDocument);
+    }
+
+    // Upload for the Index Emploi
+    public void uploadEmploiDocument(MultipartFile file, DocumenMetaData document) throws IOException {
+        EmploiDocument emploiDocument = new EmploiDocument();
+        uploadDocument(file, document, emploiDocument);
+    }
+
 
     private String saveFile(MultipartFile file) {
         try {
@@ -195,75 +240,87 @@ public class DocumentService {
         }
     }
 
+    // Method General For Search
 
-    public SearchHits<DocumentModel> searchDocument(String word) {
-        if (word == null || word.isEmpty()) {
-            return null;
-        }
+    public <T extends BaseDocument> SearchHits<T> searchDocument(
+            String word,
+            String indexName,
+            Class<T> documentClass,
+            boolean includeExtraFields
+    ) {
+        if (word == null || word.isEmpty()) return null;
 
-        Query titleQuery = MatchQuery.of(m -> m      //Query type
+        BoolQuery.Builder boolBuilder = new BoolQuery.Builder();
+
+        // Fuzzy match on title
+        boolBuilder.should(MatchQuery.of(m -> m
                 .field("title")
                 .query(word)
                 .fuzziness("AUTO")
                 .minimumShouldMatch("75%")
-        )._toQuery();
+        )._toQuery());
 
-        //blueprint for the bool query
-        BoolQuery.Builder boolBuilder = new BoolQuery.Builder();
-
-        // Title query (fuzzy match)
-        boolBuilder.should(titleQuery);
-
-
-        Query authorQuery = TermQuery.of(t -> t
+        // Exact match on author
+        boolBuilder.should(TermQuery.of(t -> t
                 .field("author")
                 .value(word)
-        )._toQuery();
+        )._toQuery());
 
-        boolBuilder.should(authorQuery);
-
-
+        // Match on dateCreation if parsable
         try {
             LocalDate searchDate = LocalDate.parse(word, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-
-            Query dateQuery = TermQuery.of(t -> t
-                    .field("createdAt")
+            boolBuilder.should(TermQuery.of(t -> t
+                    .field("dateCreation")
                     .value(searchDate.format(DateTimeFormatter.ISO_DATE))
-            )._toQuery();
-
-            boolBuilder.should(dateQuery);
+            )._toQuery());
         } catch (DateTimeParseException e) {
-            // Ignorer si ce n'est pas une date
+            // Ignore
+        }
+
+        // Extra fields for PvDocument only (csf and csd)
+        if (includeExtraFields) {
+            boolBuilder.should(MatchQuery.of(m -> m.field("type").query(word))._toQuery());
+            boolBuilder.should(MatchQuery.of(m -> m.field("type").query(word))._toQuery());
         }
 
         boolBuilder.minimumShouldMatch("1");
 
-
         try {
-//            Query ownerFilter = TermQuery.of(t -> t
-//                    .field("owner")
-//                   // .value(currentUsername)
-//            )._toQuery();
-
-            Query finalQuery = BoolQuery.of(b -> b
-                            .must(boolBuilder.build()._toQuery()) // Critères de recherche
-                    //  .filter(ownerFilter)                 // Filtre par owner
-            )._toQuery();
-
+            Query finalQuery = BoolQuery.of(b -> b.must(boolBuilder.build()._toQuery()))._toQuery();
 
             NativeQuery nativeQuery = NativeQuery.builder()
                     .withQuery(finalQuery)
-                    .build();//
-
+                    .build();
 
             return elasticsearchOperations.search(
                     nativeQuery,
-                    DocumentModel.class,
-                    IndexCoordinates.of("documents")
+                    documentClass,
+                    IndexCoordinates.of(indexName)
             );
         } catch (Exception e) {
             throw new RuntimeException("Search failed for: " + word, e);
         }
+    }
+
+    // Search For Index Pv
+    public SearchHits<PvDocument> searchPvDocument(String word) {
+        return searchDocument(word, "Pv", PvDocument.class, true);
+    }
+
+    //Search For Index Annonce
+
+    public SearchHits<AnnanceDocument> searchAnnanceDocument(String word) {
+        return searchDocument(word, "Annonce", AnnanceDocument.class, false);
+    }
+
+    //Search For Index Planning
+    public SearchHits<PlanningDocument> searchPlanningDocument(String word) {
+        return searchDocument(word, "Planning", PlanningDocument.class, false);
+    }
+
+    // Search For Index Emploi
+    public SearchHits<EmploiDocument> searchEmploiDocument(String word) {
+        return searchDocument(word, "Emploi", EmploiDocument.class, false);
     }
 
     public void indexFile(String indexName, List<MultipartFile> files) {
@@ -283,17 +340,17 @@ public class DocumentService {
                 // Instantiate appropriate document
                 BaseDocument doc;
                 switch (indexName.toLowerCase()) {
-                    case "pv":
+                    case "Pv":
                         doc = new PvDocument();
                         ((PvDocument) doc).setType(determinePvTypeFromContent(content, name));
                         break;
-                    case "annonce":
+                    case "Annonce":
                         doc = new AnnanceDocument();
                         break;
-                    case "emploi":
+                    case "Emploi":
                         doc = new EmploiDocument();
                         break;
-                    case "planning":
+                    case "Planning":
                         doc = new PlanningDocument();
                         break;
                     default:
