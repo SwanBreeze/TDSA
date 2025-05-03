@@ -7,7 +7,18 @@ const cachedAssets = [
     'cssGlobale.css',
     'search.css',
     'upload.css',
-    'app.js'
+    'app.js',
+    'search.js',
+    'upload.js',
+    'login.html',
+    'login.css',
+    'android-chrome-192.png',
+    'android-chrome-512.png',
+    'ustoLogo.png',
+    'PDF.png',
+    'DOCX.png',
+    'EXCEL.png'
+    
 ]
 
 //install
@@ -26,7 +37,7 @@ self.addEventListener('install', event =>{
     );
 });
 
-//activate
+//activate to add later on
 self.addEventListener('activate', event =>{
     console.log('Service Worker: Activated');
 });
