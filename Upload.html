@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="upload.css">
+        <link rel="stylesheet" href="cssGlobale.css">
+        <link rel="manifest" href="manifest.json">
+        <link rel="icon" href="android-chrome-192.png">
+        <link rel="icon" href="android-chrome-512.png">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <title>Search & Upload  Document</title>
+    </head>
+    <body>
+    
+
+
+        <div id="sidebar-container"></div>
+        <div class="upload-document">
+         
+         </div>
+     
+         <div class="card-container" id="card-container">
+             <div class="card" onclick="showUploadForm('PDF')">
+                 <img src="PDF.png" alt="PDF icon" class="card-img" loading="lazy">
+                 <h3>pdf</h3>
+             </div>
+             <div class="card" onclick="showUploadForm('DOCx')">
+                 <img src="DOCX.png" alt="docxicon" class="card-img" loading="lazy">
+                 <h3>docx</h3> 
+               </div>
+               <div class="card" onclick="showUploadForm('Excel')">
+                 <img src="EXCEL.png" alt="excel icon" class="card-img" loading="lazy">
+                 <h3>excel</h3>
+               </div>
+          </div>
+     
+     
+
+
+
+
+
+    <div class="center" >
+        <div class="upload-doc" id="upload-doc" style="display: none;">
+       
+    <form>
+       
+           
+            
+            <form action="#" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-group">
+                <label for="title"><h3>Title:</h3></label>
+        <input type="text" id="titleE" class="titleE" required placeholder="Enter the document title" oninvalid="this.setCustomValidity('Please enter the document title.')" oninput="this.setCustomValidity('')">
+    
+        <span  class="required">*</span>
+        </div>
+        <form action="#" method="POST" enctype="multipart/form-data" novalidate>
+            <div class="form-group">
+    <label class="date"><h3>Upload date:</h3></label>
+    <input type="date" id="dateE"  class="dateE" required oninvalid="this.setCustomValidity('Please select the upload date.')" oninput="this.setCustomValidity('')">
+      
+    <span class="required">*</span>
+    
+    <div class="form-group">
+        <label for="athor"><h3>keyword:</h3></label>
+<input type="text" id="athor" class="athor" placeholder="Enter the keyword" >
+
+</div>
+    <form action="#" method="POST" enctype="multipart/form-data" novalidate>
+        <div class="form-group">
+            
+    <label for="category"><h3>Category:</h3></label>
+
+<select  id="category" name="category" class="category"  required oninvalid="this.setCustomValidity('Please select a document category.')" oninput="this.setCustomValidity('')">
+  <option value=""> Select category </option>
+  <option value="DOCx">DOCx</option>
+  <option value="PDF">PDF</option>
+  <option value="Excel">EXCEL</option>
+
+</select>
+<span class="required">*</span></div>
+
+<div class="form-group">
+    <label for="text"><h3>author:</h3></label>
+<input type="text" id="titleE" class="titleE" required oninvalid="this.setCustomValidity('Please enter the author.')" oninput="this.setCustomValidity('')" >
+
+<span  class="required">*</span>
+</div>
+
+<label><h3>Document description:</h3></label>
+<textarea   id="description" class="description" rows="2" ></textarea>
+
+<form action="#" method="POST" enctype="multipart/form-data" novalidate>
+    <div class="form-group">
+<label><h3>choose file:</h3></label>
+<input type="file" id="file"  class="choose-file" required oninvalid="this.setCustomValidity('Please choose-file.')" oninput="this.setCustomValidity('')">
+
+<span class="required">*</span>
+
+<button  type="submit" class="upload">upload</button>
+<input type="file" id="fileInput" style="display: none" multiple />
+    
+
+
+</form>
+</div>
+
+</div>
+
+<script>
+
+    //sidebar js
+    fetch('sidePanel.html')
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const sidebar = doc.querySelector('.sidebar');
+            document.getElementById('sidebar-container').appendChild(sidebar);
+
+            // Load the JS file and initialize
+            const script = document.createElement('script');
+            script.src = 'app.js';
+            script.onload = function() {
+                if (window.initializeSidebar) {
+                    window.initializeSidebar();
+                }
+            };
+            document.body.appendChild(script);
+        });
+        //To verify using Important fields  js 
+document.querySelector('form').addEventListener('submit', function(e) {
+    const requiredFields = this.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.style.borderColor = 'red';
+            isValid = false;
+        } else {
+            field.style.borderColor = '';
+        }
+    });
+    
+    if (!isValid) {
+        e.preventDefault();
+        alert('Please fill in all required fields');
+    }
+});
+
+
+function showUploadForm(type) {
+      document.getElementById('card-container').style.display = 'none';
+      document.getElementById('upload-doc').style.display = 'block';
+      document.getElementById('category').value = type;
+    }
+
+</script>
+</body>
+</html>
