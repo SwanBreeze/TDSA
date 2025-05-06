@@ -13,7 +13,7 @@
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
     --text-color: #707070;
-    --accent-color: #8563dc;
+    --accent-color: #6839dd;
     --container-color:#cfcfcf8f;
 
     --tran-02: all 0.2s ease;
@@ -118,17 +118,6 @@ font-size: 20px;
 
 
 
-/*.sidebar .search-box{
-    background: var(--primary-color-light);
-}
-.search-box input{
-    height: 100%;
-    width: 100%;
-    outline: none;
-    border: none;
-    border-radius: 6px;
-    background: var(--primary-color-light);
-}*/
 .sidebar li a{
     height: 100%;
     width: 100%;
@@ -298,25 +287,25 @@ body.dark .menu-links li a {
     transform: scale(0.95); 
 }
 
-/* need to add styling for main*/
-.main-content {
-    padding-top: 80px;
-    
-}
-.main-content h1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-    font-size: 40px;
-}
-.main-content p{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color);
-    font-size: 15px;
-}
 
+
+button:focus, a:focus, .toggle:focus{
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
+
+
+
+
+  .sidebar.close li .icon:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: var(--primary-color);
+    color: var(--sidebar-color);
+    padding: 5px 10px;
+    border-radius:0 4px 4px 0;
+    left: 72px;
+    z-index: 1000;
+    font-size: 15px;
+  }
 
