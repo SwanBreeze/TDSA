@@ -69,4 +69,3 @@ if('serviceWorker' in navigator)
     })
 }
 
-
