@@ -6,13 +6,14 @@
     <title>Search & Upload Documents</title>
 
     <link rel="stylesheet" href="cssGlobale.css">
-    <link rel="stylesheet" href="search.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="android-chrome-192.png">
     <link rel="icon" href="android-chrome-512.png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+   
+
     <nav class="sidebar">
         <!-- Sidebar Content -->
         <header>
@@ -33,14 +34,14 @@
                 <ul class="menu-links">
                     
                    <li class="nav-link">
-                    <a href="searchBar.html"> <!-- Link to your Search HTML -->
-                        <i class='bx bx-file-find icon' ></i>
+                    <a href="searchBar.html"> <!-- Link Search HTML -->
+                        <i class='bx bx-file-find icon' data-tooltip="Search Doc"></i>
                         <span class="text nav-text">Search Doc</span>
                    </a>
                </li>
                <li class="nav-link">
-                <a href="Upload.html"> <!-- Link to your Upload HTML -->
-                    <i class='bx bx-upload icon'></i>
+                <a href="Upload.html"> <!-- Link  Upload HTML -->
+                    <i class='bx bx-upload icon' data-tooltip="Upload Doc"></i>
                     <span class="text nav-text">Upload Doc</span>
                </a>
               </li>
@@ -49,7 +50,7 @@
             <div class="bottom-content">
                 <li class="">
                     <a href="login.html">
-                        <i class='bx bx-log-out icon'></i>
+                        <i class='bx bx-log-out icon' data-tooltip="Logout"></i>
                         <span class="text nav-text">LogOut</span>
                    </a>
                </li>
@@ -67,19 +68,5 @@
         </div>
     </nav>
 
-    
-        <!-- Main Content for Index Page -->
-        <main id="main-content">
-            
-        <section class="main-content">
-            <h1>Welcome to the Search & Upload System</h1>
-            <p>This is  where you can search for documents and upload new ones.</p>
-
-        </section>
-    </main>
-    
-    <div id="app"></div>
-    <script src="app.js"></script>
- <!--   <script src="router.js"></script>-->
 </body>
 </html>
