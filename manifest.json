@@ -1,7 +1,7 @@
 {
     "name": "Document Search App",
     "short_name": "DocSearch",
-    "start_url":"index.html",
+    "start_url":"login.html",
     "display": "standalone",
     "background_color": "#b6b6b8",
     "theme_color": "#2c3e50",
