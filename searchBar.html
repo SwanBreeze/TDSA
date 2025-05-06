@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search & upload  document</title>
+    <title>Search & Upload  Document</title>
     <link rel="stylesheet" href="search.css">
     <link rel="stylesheet" href="cssGlobale.css">
     <link rel="manifest" href="manifest.json">
@@ -84,24 +84,7 @@
         <p>Uploaded: 2025-04-23</p>
         <button class="btn-download"><i class='bx bxs-download' ></i></button>
       </div>
-      <div class="card">
-        <h3>report.excel</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-23</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
-      <div class="card">
-        <h3>report.excel</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-23</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
-      <div class="card">
-        <h3>report.excel</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-23</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
+      
       <div class="pagination">
         <button><i class='bx bx-left-arrow-alt' ></i></button>
         <span>Page 1/5</span>
@@ -110,7 +93,7 @@
 </div>
 <div id="app"></div>
 <script>
-    fetch('index.html')
+    fetch('sidePanel.html')
         .then(response => response.text())
         .then(html => {
             const parser = new DOMParser();
@@ -118,7 +101,7 @@
             const sidebar = doc.querySelector('.sidebar');
             document.getElementById('sidebar-container').appendChild(sidebar);
             
-            // Load the JS file and initialize
+            // Load the js file nd initialize
             const script = document.createElement('script');
             script.src = 'app.js';
             script.onload = function() {
@@ -129,5 +112,6 @@
             document.body.appendChild(script);
         });
 </script>
+<script src="app.js"></script>
 </body>
 </html>
