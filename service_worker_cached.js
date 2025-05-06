@@ -1,7 +1,7 @@
 const cacheName = 'v1';
 
 const cachedAssets = [
-    'index.html',
+    'sidePanel.html',
     'searchBar.html',
     'Upload.html',
     'cssGlobale.css',
@@ -37,7 +37,7 @@ self.addEventListener('install', event =>{
     );
 });
 
-//activate to add later on
+//activate
 self.addEventListener('activate', event =>{
     console.log('Service Worker: Activated');
 });
@@ -52,3 +52,15 @@ self.addEventListener('fetch', event =>{
 )
 })
 
+
+
+
+/*for notification*/
+
+self.addEventListener('push', event => {
+    const data = event.data.json();
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: 'android-chrome-192.png',
+    });
+  });
