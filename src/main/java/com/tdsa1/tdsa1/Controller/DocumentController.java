@@ -5,6 +5,7 @@ import com.tdsa1.tdsa1.Service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -119,7 +121,7 @@ public class DocumentController {
     }
 
 
-    @PostMapping(path = "/upload-files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+   /* @PostMapping(path = "/upload-files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadIndexes(@RequestParam String indexName, @RequestParam List<MultipartFile> files) {
 
 
@@ -133,7 +135,57 @@ public class DocumentController {
         }
 
 
-    }
+    }*/
 
+    // upload postmaping
+
+    @PostMapping(path = "/upload-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("indexName") String indexName,
+            @RequestParam("title") String title,
+            @RequestParam("author") String author,
+            @RequestParam("description") String content, // from "document description"
+            @RequestParam("uploadDate") @DateTimeFormat(pattern = "MM-dd-yyyy") LocalDate dateCreation,
+            @RequestParam("keyword") String keyword,
+            @RequestParam("category") String category,
+            @RequestParam(value = "type", required = false) String type
+    ) {
+        try {
+            DocumenMetaData meta = new DocumenMetaData();
+            meta.setTitle(title);
+            meta.setAuthor(author);
+            meta.setContent(content);
+            meta.setDateCreation(dateCreation);
+            meta.setKeyword(keyword);
+            meta.setCategory(category);
+            meta.setType(type); // only needed for PV maybe
+
+            // Dispatch to the correct index upload method
+            switch (indexName.toLowerCase()) {
+                case "pv":
+                    documentService.uploadPvDocument(file, meta);
+                    break;
+                case "annonce":
+                    documentService.uploadAnnonceDocument(file, meta);
+                    break;
+                case "planning":
+                    documentService.uploadPlanningDocument(file, meta);
+                    break;
+                case "emploi":
+                    documentService.uploadEmploiDocument(file, meta);
+                    break;
+                default:
+                    return ResponseEntity.badRequest().body("Invalid index name");
+            }
+
+            return ResponseEntity.ok("Document uploaded and indexed successfully.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error uploading document: " + e.getMessage());
+        }
+    }
 
 }

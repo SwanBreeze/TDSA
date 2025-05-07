@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search & Upload Documents</title>
+
+    <link rel="stylesheet" href="cssGlobale.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="android-chrome-192.png">
+    <link rel="icon" href="android-chrome-512.png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+   
+
+    <nav class="sidebar">
+        <!-- Sidebar Content -->
+        <header>
+            <div class="image-text">
+               <span class="image">
+                <img src="ustoLogo.png" alt="logo">
+               </span> 
+               <div class="text header-text">
+                <span class="name">Search Doc</span>
+                <span class="profession">Poste Graduation FMI</span>
+                </div>
+            </div>
+            <i class='bx bx-chevrons-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    
+                   <li class="nav-link">
+                    <a href="searchBar.html"> <!-- Link Search HTML -->
+                        <i class='bx bx-file-find icon' data-tooltip="Search Doc"></i>
+                        <span class="text nav-text">Search Doc</span>
+                   </a>
+               </li>
+               <li class="nav-link">
+                <a href="Upload.html"> <!-- Link  Upload HTML -->
+                    <i class='bx bx-upload icon' data-tooltip="Upload Doc"></i>
+                    <span class="text nav-text">Upload Doc</span>
+               </a>
+              </li>
+            </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="login.html">
+                        <i class='bx bx-log-out icon' data-tooltip="Logout"></i>
+                        <span class="text nav-text">LogOut</span>
+                   </a>
+               </li>
+               <li class="mode">
+                <div class="moon-sun">
+                    <i class='bx bx-moon icon moon' ></i>
+                    <i class='bx bx-sun icon sun'style="display: none;"></i>
+                 </div>
+                 <span class="mode-text text">Dark Mode</span>
+                 <div class="toggle-switch">
+                    <input type="checkbox" class="theme-checkbox">
+                 </div>  
+           </li>
+            </div>
+        </div>
+    </nav>
+
+</body>
+</html>

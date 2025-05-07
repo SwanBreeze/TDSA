@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="cssGlobale.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="android-chrome-192.png">
+    <link rel="icon" href="android-chrome-512.png">
+    
+   
+
+</head>
+<body>
+<div class="container">
+    
+    <div class="from-box login ">
+    <form action=""  id="login-form">
+        <h1>Login</h1>
+        <div class="input-box">
+            <input type="text" id="username" placeholder="Username" required>
+            <i class='bx bxs-user'></i>
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+        </div>
+        
+    
+
+        <button type="submit" class="btn"> Login </button>
+    </form>
+</div>
+
+
+<div class="from-box signup ">
+    <form action="">
+        <h1> Create Account </h1>
+        <div class="input-box">
+            <input type="text"placeholder=" Username" required>
+            <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <!-- <input type="email" placeholder=" email" required>
+                <i class='bx bxs-envelope'></i>-->
+                
+                <select id="role" name="role" class="role" >
+                    <option value=""> Select role </option>
+                    <option value="VISE_DOYEN">VISE_DOYEN</option>
+                    <option value="CHEF_DEPARTEMENT">CHEF_DEPARTEMENT</option>
+                    <option value="CHEF_PG">CHEF_PG</option>
+                    <option value="CHEF_RELATION_EXTERNE">CHEF_RELATION_EXTERNE</option>
+                    <option value=" CHEF_RECHERCHE_SUJET">CHEF_RECHERCHE_SUJET </option>
+                    <option value="SECRETAIRE_PG ">SECRETAIRE_PG </option>
+                    <option value="SECRETAIRE_RELATION_EXTERNE">SECRETAIRE_RELATION_EXTERNE</option>
+                    <option value="SECRETAIRE_RECHERCHE_SUJET">SECRETAIRE_RECHERCHE_SUJET</option>
+                    <option value="SECRETAIRE_CHEF_DEP ">SECRETAIRE_CHEF_DEP </option>
+                    <option value="DEFAULT_USER">DEFAULT_USER</option>
+                  </div>
+            
+        <div class="input-box">
+        <input type="password" placeholder="password"  required>
+        <i class='bx bxs-lock-alt'></i>
+        </div>
+        
+    
+
+        <button type="submit" class="btn"> SIGN UP </button>
+    </form>
+</div>
+
+
+<div class="toggle-box">
+   <div class=" toggle-panel toggle-left">
+<h1>Welcome !</h1>
+<p>please enter your informations </p>
+<button class="btn singup-btn"> SIGN UP</button>
+
+</div>
+<div class=" toggle-panel toggle-right">
+    <h1>Welcome Back!</h1>
+    <p>To keep connected with us please login with your personnal info</p>
+    <button class="btn login-btn"> login </button>
+    
+    </div>
+</div>
+</div>
+
+<script >
+    const container = document.querySelector('.container');
+    const signupBtn = document.querySelector('.singup-btn');
+    const loginBtn = document.querySelector('.login-btn');
+
+    signupBtn.addEventListener('click', () => {
+        container.classList.add('active');
+    });
+    loginBtn.addEventListener('click', () => {
+        container.classList.remove('active');
+    });
+
+   
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        //test
+        const validUsername = "test";
+        const validPassword = "a123";
+
+        if (username === validUsername && password === validPassword) {
+            // Redirect to searchBar.html
+            window.location.href = "searchBar.html";
+        } else {
+            alert("Invalid username or password");
+        }
+    });
+    
+
+</script>
+
+</body>
+</html>

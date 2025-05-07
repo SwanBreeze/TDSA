@@ -12,6 +12,9 @@ public class DocumenMetaData {
     private String title;
 
     private String author;
+    private String Keyword;
+    private String Category;
+
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateCreation;
@@ -33,6 +36,23 @@ public class DocumenMetaData {
         this.content = content;
         //this.isPublic = isPublic;
     }
+
+    public String getKeyword() {
+        return Keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        Keyword = keyword;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
 
     public String getId() {
         return id;
@@ -82,11 +102,5 @@ public class DocumenMetaData {
         this.type = type;
     }
 
-//    public boolean isPublic() {
-//        return isPublic;
-//    }
-//
-//    public void setPublic(boolean aPublic) {
-//        isPublic = aPublic;
-//    }
+
 }
