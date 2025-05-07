@@ -117,6 +117,20 @@ body{
     border-style:none ;
   
 }
+.indexnome{
+    width: 350px;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background: var(--body-color);
+    color:var(--primary-color);
+    border-color: #020008;
+    border-style:none ;
+  
+}
 .upload:hover{
 
     transform: scale(1.05); 
