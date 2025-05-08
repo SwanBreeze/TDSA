@@ -14,6 +14,8 @@ public class DocumenMetaData {
     private String author;
     private String Keyword;
     private String Category;
+    private String indexName;
+    private String description;
 
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -34,7 +36,24 @@ public class DocumenMetaData {
         this.author = author;
         this.dateCreation = dateCreation;
         this.content = content;
+
         //this.isPublic = isPublic;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIndexName() {
+        return indexName;
+    }
+
+    public void setIndexName(String indexName) {
+        this.indexName = indexName;
     }
 
     public String getKeyword() {

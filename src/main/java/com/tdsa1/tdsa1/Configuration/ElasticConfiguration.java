@@ -1,6 +1,5 @@
 package com.tdsa1.tdsa1.Configuration;
-import com.fasterxml.jackson.databind.Module; // Correct import
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -8,15 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 import java.time.format.DateTimeFormatter;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = {
-        "com.tdsa1.tdsa1.Document"
 
-})
 public class ElasticConfiguration extends ElasticsearchConfiguration {
 
     private final ElasticProperties properties;

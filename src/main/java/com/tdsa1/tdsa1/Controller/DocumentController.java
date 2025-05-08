@@ -1,5 +1,6 @@
 package com.tdsa1.tdsa1.Controller;
 
+
 import com.tdsa1.tdsa1.Document.*;
 import com.tdsa1.tdsa1.Service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +20,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping("/api/document")
 public class DocumentController {
 
@@ -28,6 +31,7 @@ public class DocumentController {
     @Autowired
     public DocumentController(DocumentService documentService) {
         this.documentService = documentService;
+
     }
 
     @GetMapping("/")
@@ -35,6 +39,11 @@ public class DocumentController {
         return "yes girl it's working";
     }
 
+
+    @GetMapping("/upload")
+    public String showUploadForm() {
+        return "redirect:/upload.html"; // This refers to upload.html (or .thymeleaf) in your templates folder
+    }
 
     @PostMapping(path = "/upload-metadata", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadMetadata(
@@ -67,21 +76,6 @@ public class DocumentController {
         }
 
     }
-
-  /*  @GetMapping("/search")
-    public List<DocumenMetaData> searchDocument(String word) {
-        SearchHits<DocumentModel> hits = documentService.searchDocument(word);
-        return hits.get()
-                .map(SearchHit::getContent)
-                .map(document -> new DocumenMetaData(
-                        document.getId(),
-                        document.getTitle(),
-                        document.getContent(),
-                        document.getAuthor(),
-                        document.getDateCreation()
-                ))
-                .collect(Collectors.toList());
-    }*/
 
 
     @GetMapping("/search/Pv")
@@ -121,22 +115,6 @@ public class DocumentController {
     }
 
 
-   /* @PostMapping(path = "/upload-files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadIndexes(@RequestParam String indexName, @RequestParam List<MultipartFile> files) {
-
-
-        try {
-            documentService.indexFile(indexName, files);
-            return ResponseEntity.ok("File uploaded");
-
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                    .body("Error uploading the file");
-        }
-
-
-    }*/
-
     // upload postmaping
 
     @PostMapping(path = "/upload-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -145,21 +123,35 @@ public class DocumentController {
             @RequestParam("indexName") String indexName,
             @RequestParam("title") String title,
             @RequestParam("author") String author,
-            @RequestParam("description") String content, // from "document description"
-            @RequestParam("uploadDate") @DateTimeFormat(pattern = "MM-dd-yyyy") LocalDate dateCreation,
+            @RequestParam("description") String description, // from "document description"
+            @RequestParam("uploadDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateCreation,
+            //@RequestParam("uploadDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateCreation,
             @RequestParam("keyword") String keyword,
             @RequestParam("category") String category,
-            @RequestParam(value = "type", required = false) String type
-    ) {
+            @RequestParam(value = "type", required = false) String type) {
+
+
         try {
+            System.out.println("Received upload for index: " + indexName);
+            // Extract content using Tika from service
+            String content = documentService.extractContent(file); // Add this method to service
+
             DocumenMetaData meta = new DocumenMetaData();
+            meta.setContent(content);
             meta.setTitle(title);
             meta.setAuthor(author);
-            meta.setContent(content);
-            meta.setDateCreation(dateCreation);
-            meta.setKeyword(keyword);
             meta.setCategory(category);
-            meta.setType(type); // only needed for PV maybe
+            meta.setKeyword(keyword);
+            meta.setDescription(description);
+            meta.setDateCreation(dateCreation);
+            meta.setIndexName(indexName);
+            // needed for PV maybe
+            if (indexName.equalsIgnoreCase("pv")) {
+                if (type == null || type.isEmpty()) {
+                    type = "csf"; // Default value
+                }
+                meta.setType(type);
+            }
 
             // Dispatch to the correct index upload method
             switch (indexName.toLowerCase()) {

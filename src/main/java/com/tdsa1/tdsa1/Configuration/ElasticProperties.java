@@ -1,10 +1,12 @@
 package com.tdsa1.tdsa1.Configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "spring.elasticsearch")
+@EnableElasticsearchRepositories(basePackages = "com.tdsa1.tdsa1.Repository")
 public class ElasticProperties {
 
     private String username;

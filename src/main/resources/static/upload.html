@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Search & Upload Document</title>
+    <link href="upload.css" rel="stylesheet">
+    <link href="cssGlobale.css" rel="stylesheet">
+    <link href="manifest.json" rel="manifest">
+    <link href="android-chrome-192.png" rel="icon">
+    <link href="android-chrome-512.png" rel="icon">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<!-- Card Selector -->
+<div class="card-container" id="card-container">
+    <div class="card" onclick="showUploadForm('PDF')">
+        <img alt="PDF icon" class="card-img" loading="lazy" src="PDF.png">
+        <h3>PDF</h3>
+    </div>
+    <div class="card" onclick="showUploadForm('DOCx')">
+        <img alt="DOCX icon" class="card-img" loading="lazy" src="DOCX.png">
+        <h3>DOCx</h3>
+    </div>
+    <div class="card" onclick="showUploadForm('Excel')">
+        <img alt="Excel icon" class="card-img" loading="lazy" src="EXCEL.png">
+        <h3>Excel</h3>
+    </div>
+</div>
+
+<!-- Upload Form -->
+<div class="center">
+    <form class="upload-doc" enctype="multipart/form-data" id="uploadForm"
+          method="post" novalidate
+          style="display: none;">
+        <!-- Title -->
+        <div class="form-group">
+            <label for="titleE"><h3>Title:</h3></label>
+            <input class="title" id="titleE" name="title" oninput="this.setCustomValidity('')"
+                   oninvalid="this.setCustomValidity('Please enter the document title.')"
+                   placeholder="Enter the document title"
+                   required
+                   type="text">
+            <span class="required">*</span>
+        </div>
+        <!-- Upload Date -->
+        <div class="form-group">
+            <label for="dateE"><h3>Upload Date:</h3></label>
+            <input class="date" id="dateE" name="uploadDate" oninput="this.setCustomValidity('')"
+                   oninvalid="this.setCustomValidity('Please select the upload date.')"
+                   required
+                   type="date">
+            <span class="required">*</span>
+        </div>
+        <!-- Keyword -->
+        <div class="form-group">
+            <label for="keyword"><h3>Keyword:</h3></label>
+            <input class="athor" id="keyword" name="keyword" placeholder="Enter the keyword" type="text">
+        </div>
+        <!-- Category -->
+        <div class="form-group">
+            <label for="categoryY"><h3>Category:</h3></label>
+            <select class="category" id="categoryY" name="category" oninput="this.setCustomValidity('')"
+                    oninvalid="this.setCustomValidity('Please select a document category.')"
+                    required>
+                <option value="">Select category</option>
+                <option value="DOCx">DOCx</option>
+                <option value="PDF">PDF</option>
+                <option value="Excel">Excel</option>
+            </select>
+            <span class="required">*</span>
+        </div>
+        <!-- Index Name -->
+        <div class="form-group">
+            <label for="indexnomeE"><h3>Index Name:</h3></label>
+            <select class="indexnome" id="indexnomeE" name="indexName" oninput="this.setCustomValidity('')"
+                    oninvalid="this.setCustomValidity('Please select the index name.')"
+                    required>
+                <option value="">Select the index</option>
+                <option value="pv">pv</option>
+                <option value="annonce">Annonce</option>
+                <option value="planning">Planning</option>
+                <option value="emploi">Emploi du temps</option>
+                <option value="other">Other</option>
+            </select>
+            <span class="required">*</span>
+        </div>
+        <!-- Author -->
+        <div class="form-group">
+            <label for="author"><h3>Author:</h3></label>
+            <input class="title" id="author" name="author" oninput="this.setCustomValidity('')"
+                   oninvalid="this.setCustomValidity('Please enter the author.')" placeholder="Enter the author"
+                   required
+                   type="text">
+            <span class="required">*</span>
+        </div>
+        <!-- Description -->
+        <div class="form-group">
+            <label for="descriptionN"><h3>Document Description:</h3></label>
+            <textarea class="description" id="descriptionN" name="description" rows="2"></textarea>
+        </div>
+        <!-- File Input -->
+        <div class="form-group">
+            <label for="fileE"><h3>Choose File:</h3></label>
+            <input class="choose-file" id="fileE" name="file" oninput="this.setCustomValidity('')"
+                   oninvalid="this.setCustomValidity('Please choose a file.')"
+                   required
+                   type="file">
+            <span class="required">*</span>
+        </div>
+        <!-- Submit -->
+        <div class="form-group">
+            <button class="upload" type="submit">Upload</button>
+        </div>
+    </form>
+</div>
+
+<div id="result"></div>
+
+<script>
+    // Load sidebar
+    fetch('sidePanel.html')
+        .then(res => res.text())
+        .then(html => {
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            document.getElementById('sidebar-container').appendChild(doc.querySelector('.sidebar'));
+            const script = document.createElement('script');
+            script.src = 'app.js';
+            script.onload = () => window.initializeSidebar?.();
+            document.body.appendChild(script);
+        });
+
+    // Show upload form
+    function showUploadForm(type) {
+        document.getElementById('card-container').style.display = 'none';
+        document.getElementById('uploadForm').style.display = 'block';
+        document.getElementById('categoryY').value = type;
+    }
+
+
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let valid = true;
+        this.querySelectorAll('[required]').forEach(f => {
+            if (!f.value.trim()) {
+                f.style.borderColor = 'red';
+                valid = false;
+            } else {
+                f.style.borderColor = '';
+            }
+        });
+        if (!valid) return alert('Please fill in all required fields');
+
+        const fd = new FormData(this);
+        fetch('/upload-file', {
+            method: 'POST',
+            body: fd
+        })
+            .then(res => {
+                if (!res.ok) throw new Error(res.statusText);
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('result').innerHTML =
+                    `<div class="success">${data.message || 'Upload successful!'}</div>`;
+            })
+            .catch(err => {
+                document.getElementById('result').innerHTML =
+                    `<div class="error">Error: ${err.message}</div>`;
+            });
+    });
+
+
+</script>
+
+</body>
+</html>

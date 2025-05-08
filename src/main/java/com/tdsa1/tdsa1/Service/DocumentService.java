@@ -174,15 +174,25 @@ public class DocumentService {
         baseDocument.setDateCreation(document.getDateCreation());
         baseDocument.setFileName(file.getOriginalFilename());
         baseDocument.setFileType(file.getContentType());
+        baseDocument.setKeyword(document.getKeyword());
         baseDocument.setFileSize(file.getSize());
-
+        baseDocument.setCategory(document.getCategory());
         // Save file to disk and set file path
         String path = saveFile(file);
         baseDocument.setFilePath(path);
 
         try {
             // Save the document to the repository (and index in Elasticsearch automatically)
-            documentRepository.save(baseDocument);
+            // Save to appropriate repository
+            if (baseDocument instanceof PvDocument) {
+                pvRepository.save((PvDocument) baseDocument);
+            } else if (baseDocument instanceof AnnanceDocument) {
+                annonceRepository.save((AnnanceDocument) baseDocument);
+            } else if (baseDocument instanceof EmploiDocument) {
+                emploiRepository.save((EmploiDocument) baseDocument);
+            } else if (baseDocument instanceof PlanningDocument) {
+                planningRepository.save((PlanningDocument) baseDocument);
+            }
         } catch (Exception e) {
             // Rollback file save on error
             Files.deleteIfExists(Paths.get(path));
@@ -481,5 +491,15 @@ public class DocumentService {
         }
     }
 
+    public String extractContent(MultipartFile file) throws IOException, TikaException, SAXException {
+        BodyContentHandler handler = new BodyContentHandler(-1);
+        Metadata metadata = new Metadata();
+
+        try (InputStream stream = file.getInputStream()) {
+            parser.parse(stream, handler, metadata, context);
+        }
+
+        return handler.toString();
+    }
 
 }
