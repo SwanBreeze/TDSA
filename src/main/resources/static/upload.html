@@ -155,10 +155,17 @@
         if (!valid) return alert('Please fill in all required fields');
 
         const fd = new FormData(this);
-        fetch('/upload-file', {
+
+        fetch('http://localhost:8080/api/document/upload-file', {
             method: 'POST',
-            body: fd
+            body: fd,
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json' // Explicitly accept JSON response
+            }
+           
         })
+
             .then(res => {
                 if (!res.ok) throw new Error(res.statusText);
                 return res.json();
@@ -170,6 +177,7 @@
             .catch(err => {
                 document.getElementById('result').innerHTML =
                     `<div class="error">Error: ${err.message}</div>`;
+
             });
     });
 

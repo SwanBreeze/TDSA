@@ -62,3 +62,22 @@ self.addEventListener('push', event => {
         icon: 'android-chrome-192.png',
     });
 });
+
+
+// In your service_worker_cached.js
+self.addEventListener('fetch', (event) => {
+    const url = new URL(event.request.url);
+
+    // Bypass Service Worker for all API POST requests
+    if (url.pathname.includes('/api/') && event.request.method === 'POST') {
+        event.respondWith(fetch(event.request));
+        return;
+    }
+
+    // Your existing caching logic for other requests
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            return response || fetch(event.request);
+        })
+    );
+});

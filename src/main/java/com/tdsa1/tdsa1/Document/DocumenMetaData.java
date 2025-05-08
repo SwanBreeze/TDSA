@@ -3,6 +3,7 @@ package com.tdsa1.tdsa1.Document;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class DocumenMetaData {
@@ -40,6 +41,9 @@ public class DocumenMetaData {
         //this.isPublic = isPublic;
     }
 
+    public DocumenMetaData(String id, String title, String content, String author, LocalDateTime createdAt) {
+    }
+
     public String getDescription() {
         return description;
     }
@@ -72,16 +76,12 @@ public class DocumenMetaData {
         Category = category;
     }
 
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public DocumenMetaData(String id, String title, String content, String author, LocalDateTime createdAt) {
     }
 
     public String getContent() {
