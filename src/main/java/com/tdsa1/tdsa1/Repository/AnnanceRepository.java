@@ -2,6 +2,9 @@ package com.tdsa1.tdsa1.Repository;
 
 import com.tdsa1.tdsa1.Document.AnnanceDocument;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AnnanceRepository extends ElasticsearchRepository<AnnanceDocument, String> {}
+@Repository
+public interface AnnanceRepository extends ElasticsearchRepository<AnnanceDocument, String> {
+}
 
