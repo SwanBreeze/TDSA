@@ -7,91 +7,67 @@
     <link rel="stylesheet" href="search.css">
     <link rel="stylesheet" href="cssGlobale.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="android-chrome-192.png">
-    <link rel="icon" href="android-chrome-512.png">
+   <link rel="icon" href="search_icon_cropped_192x192.png">
+    <link rel="icon" href="search_icon_cropped_512x512.png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <div id="sidebar-container"></div><!--navgation sidebar-->
+<div id="sidebar-container"></div><!--navgation sidebar-->
 
 <div class="main-search-wrapper">
-    
-   <div class="search-header">
-   
-   </div>
-  <div class="search-content"><!--wrapper-->
-    <form class="search-container">
-                <div class="search-bar">
-                       <input type="text" placeholder="Search PV,reports..." class="search-input">
-                       <button type="submit" class="search-button">
-                           <i class='bx bx-search'></i>
-                       </button>
-                </div>
-           
-        
-        <div class="search-filters">
-               <select class="filter-select">
-                 <option value="">All documents</option>
-                 <option value="">PV</option>
-                 <option value="">Announce</option>
-                 <option value="">Planning</option>
-                 <option value="">Time Table</option>
-              </select>
-               <select class="filter-select">
-                    <option value="">All types</option>
-                    <option value="">PDF</option>
-                    <option value="">DOCx</option>
-                    <option value="">Excel</option>
-               </select>
-            <select class="filter-select">
-                     <option value="">All years</option>
-                     <option value="">2025</option>
-                     <option value="">2024</option>
-                     <option value="">2023</option>
-             </select>
-             <select class="filter-select">
-                      <option>All services</option>
-                      <option>PG</option>
-                      <option>human resources</option>
-                      <option>recherche</option>
-              </select>
-              <select class="filter-select">
-                <option>Size</option>
-                <option></option>
-                <option></option>
-                <option></option>
-        </select>
-        </div>
-    </form>
-  </div>
 
- <div class="card-container">
-    <div class="card">
-        <h3>example.pdf</h3>
-       <p>Service: PG</p>
-      <p>Uploaded: 2025-04-20</p>
-    <button class="btn-download"><i class='bx bxs-download' ></i></button>
+
+    <div class="search-content"><!--wrapper-->
+        <form class="search-container" id="searchForm">
+            <div class="search-bar">
+                <input type="text" placeholder="Search PV,reports..." class="search-input" id="keyword">
+                <button type="submit" class="search-button">
+                    <i class='bx bx-search'></i>
+                </button>
+            </div>
+
+
+            <div class="search-filters">
+                <select class="filter-select" id="documentType">
+                    <option value="All documents">All documents</option>
+                    <option value="pv">pv</option>
+                    <option value="annonce">annonce</option>
+                    <option value="planning">planning</option>
+                    <option value="emploi">emploi</option>
+                </select>
+                <select class="filter-select" id="fileType">
+                    <option value="All types">All types</option>
+                    <option value="pdf">pdf</option>
+                    <option value="docx">docx</option>
+                    <option value="excel">excel</option>
+                </select>
+                <select class="filter-select" id="year">
+                    <option value="All years">All years</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+                <select class="filter-select">
+                    <option value="All services">All services</option>
+                    <option value="PG">PG</option>
+                    <option value="human resources">Human Resources</option>
+                    <option value="recherche">Recherche</option>
+                </select>
+            </div>
+        </form>
     </div>
-    <div class="card">
-        <h3>report.docx</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-21</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
-      <div class="card">
-        <h3>report.excel</h3>
-        <p>Service: PG</p>
-        <p>Uploaded: 2025-04-23</p>
-        <button class="btn-download"><i class='bx bxs-download' ></i></button>
-      </div>
-      
-      <div class="pagination">
-        <button><i class='bx bx-left-arrow-alt' ></i></button>
-        <span>Page 1/5</span>
-        <button><i class='bx bx-right-arrow-alt'></i></button>
-       </div>
-</div>
 
+    <div class="card-container" id="cardContainer">
+        <!--loading results here-->
+    </div>
+
+    <div class="pagination" id="pagination">
+        <button id="prevPage" disabled> <i class='bx bx-left-arrow-alt' ></i></button>
+        <span id="pageInfo"></span>
+        <button id="nextPage" disabled ><i class='bx bx-right-arrow-alt'></i></button>
+    </div>
+</div>
+<div id="app"></div>
 <script>
     fetch('sidePanel.html')
         .then(response => response.text())
@@ -100,8 +76,8 @@
             const doc = parser.parseFromString(html, 'text/html');
             const sidebar = doc.querySelector('.sidebar');
             document.getElementById('sidebar-container').appendChild(sidebar);
-            
-            // Load the js file nd initialize
+
+            // Load the JS file and initialize
             const script = document.createElement('script');
             script.src = 'app.js';
             script.onload = function() {
@@ -111,8 +87,10 @@
             };
             document.body.appendChild(script);
         });
+
+
 </script>
 <script src="app.js"></script>
-
+<script src="search.js"></script>
 </body>
 </html>
