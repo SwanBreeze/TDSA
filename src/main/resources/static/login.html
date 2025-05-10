@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>login</title>
+    <title>Search & Upload Documents</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="login.css" rel="stylesheet">
-    <link href="cssGlobale.css" rel="stylesheet">
-    <link href="manifest.json" rel="manifest">
-    <link href="android-chrome-192.png" rel="icon">
-    <link href="android-chrome-512.png" rel="icon">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="cssGlobale.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="search_icon_cropped_192x192.png">
+    <link rel="icon" href="search_icon_cropped_512x512.png">
 
 
 </head>
@@ -112,7 +112,7 @@
         const validPassword = "a123";
 
         if (username === validUsername && password === validPassword) {
-            // Redirect to searchBar.html
+            // redirect to searchBar.html
             window.location.href = "searchBar.html";
         } else {
             alert("Invalid username or password");
