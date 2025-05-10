@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 80px;
     gap: 20px;
 }
 
@@ -11,10 +11,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
- /*   margin-top: 150px;*/
+    /*   margin-top: 150px;*/
     width: 100%;
     max-width: 600px;
-    
+
 }
 .search-container{
     display: flex;
@@ -29,13 +29,13 @@
     align-items: center;
     width: 800px;
     max-width: 100%;
-   /* margin-left: 150px;*/
+    /* margin-left: 150px;*/
     background: var(--sidebar-color);
     border-radius: 50px;
     overflow: hidden;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     transition: var(--tran-03);
-   
+
 }
 
 .search-bar:focus-within{
@@ -45,7 +45,7 @@
     border: none;
     outline: none;
     background: transparent;
-   padding: 20px 25px;
+    padding: 20px 25px;
     color: var(--primary-color);
 }
 
@@ -54,29 +54,30 @@
     background: var(--accent-color);
     color: #FFF;
     border: none;
-  padding: 0.3rem 0.8rem;
-  border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
     width: 60px;
     height: 60px;
     display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin-left: auto; 
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: auto;
 
 }
 .search-button:hover{
-    background: #5D4FCF;
+    background: #65118a;
 }
 .search-button i{
     font-size: 25px;
 }
 .search-filters{
-   
+
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
+
 }
 .filter-select{
     background: var(--sidebar-color);
@@ -105,7 +106,7 @@
         border-radius: 0 0 10px 10px;
     }
 
- 
+
 }
 
 
@@ -114,25 +115,26 @@
 .card-container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-   
+
     justify-content: center;
     align-items: start;
     gap: 20px;
-   
+
     width: 100%;
     max-width: 1100px;
     border-radius: 8px;
-   /* background: var(--container-color);*/
+    /* background: var(--container-color);*/
     padding: 20px;
-    
+    margin-left: 225px;
+
 }
 .card{
-    
+
     height: 300px;
     width: 100%;
     max-width: 350px;
     background: var(--sidebar-color);
-   /* border: 1px solid #4f4d5f;*/
+    /* border: 1px solid #4f4d5f;*/
     border-radius: 12px;
     /*box-shadow: 5px 4px 10px rgba(0, 0, 0, 0.5);*/
     transition: var(--tran-03);
@@ -141,6 +143,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 25px;
 }
 
 .card:hover{
@@ -152,6 +155,7 @@
     margin-top: 0;
     font-size: 18px;
     color: var(--primary-color);
+    margin-bottom: 10px;
 }
 .card p{
     margin: 8px 0;
@@ -176,22 +180,85 @@
 
 @media (max-width: 768px) {
     .card-container {
-      gap: 50px;
-      grid-template-columns: repeat(2, 1fr); 
+        gap: 50px;
+        grid-template-columns: repeat(2, 1fr);
     }
-  }
-  @media (max-width: 1200px) {
+}
+@media (max-width: 1200px) {
     .card-container {
-      grid-template-columns: repeat(3, 1fr); 
+        grid-template-columns: repeat(3, 1fr);
     }
-  }
-  
-  @media (max-width: 480px) {
+}
+
+@media (max-width: 480px) {
     .card-container {
-      grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
     }
-  }
+}
 
 
 
- /*add pagination styling*/
+/*add pagination styling*/
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 0;
+
+}
+
+.pagination button {
+    background: var(--accent-color);
+    border: 1px;
+    border-radius: 30px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #65118a;
+
+    transform: translateY(-1px);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination button i {
+    line-height: 1;
+}
+
+#pageInfo {
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+    min-width: 80px;
+    text-align: center;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+
+    margin: 20px auto; /* Centers horizontally with auto margins */
+    max-width: 300px;
+}
+
+.error-message p {
+    margin: 0;
+}
